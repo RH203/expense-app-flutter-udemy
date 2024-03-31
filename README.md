@@ -1,10 +1,9 @@
-Certainly! Below is a README template for a Flutter project developed based on a course from Academind on the Udemy platform:
 
 ---
 
-# Flutter Project Name
+# EXPENSE_APP
 
-Short description or tagline of the project.
+---
 
 ## Description
 
