@@ -80,8 +80,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 count: 3,
                 effect: ExpandingDotsEffect(
                   activeDotColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                  dotColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                      Theme.of(context).colorScheme.primaryContainer,
+                  dotColor: Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withOpacity(0.5),
                 ),
               ),
             )
