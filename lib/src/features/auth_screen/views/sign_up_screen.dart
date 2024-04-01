@@ -75,6 +75,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             //* Field Text
             _formFieldSignIn(context),
+            //* Button
+            SizedBox(
+              width: double.infinity,
+              height: 120,
+              child: Column(
+                children: [
+                  CustomButtons(
+                    onTap: () =>
+                        Navigator.popAndPushNamed(context, '/mainscreen'),
+                    text: "Create",
+                    fontSize: 20,
+                    height: 70,
+                    width: 360,
+                    padding: const EdgeInsets.all(20),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account? ",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.popAndPushNamed(context, '/signinscreen'),
+                        child: Text(
+                          "Sign in now ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
             //* Login via gmail, facebook, etc
             SizedBox(
               width: double.infinity,
@@ -142,53 +187,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
             ),
-            //* Button
-            SizedBox(
-              width: double.infinity,
-              height: 120,
-              child: Column(
-                children: [
-                  CustomButtons(
-                    onTap: () =>
-                        Navigator.popAndPushNamed(context, '/mainscreen'),
-                    text: "Create",
-                    fontSize: 20,
-                    height: 70,
-                    width: 360,
-                    padding: const EdgeInsets.all(20),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Already have an account? ",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.onBackground,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.popAndPushNamed(context, '/signinscreen'),
-                        child: Text(
-                          "Sign in now ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
