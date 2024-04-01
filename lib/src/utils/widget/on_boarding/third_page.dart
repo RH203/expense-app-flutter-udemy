@@ -48,22 +48,56 @@ class ThirdPage extends StatelessWidget {
                       ),
                   textAlign: TextAlign.center,
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/mainscreen'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                  ),
-                  child: Text(
-                    "Get Started",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/signinscreen'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primaryContainer,
                         ),
-                  ),
+                      ),
+                      child: Text(
+                        "Sign in",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                            ),
+                      ),
+                    ),
+                    Text(
+                      "OR",
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                      textAlign: TextAlign.center,
+                    ),
+                    ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/signupscreen'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                      ),
+                      child: Text(
+                        "Sign up",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                            ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
