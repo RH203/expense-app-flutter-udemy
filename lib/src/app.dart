@@ -1,3 +1,5 @@
+import 'package:expense_app/src/features/auth_screen/views/sign_in_screen.dart';
+import 'package:expense_app/src/features/auth_screen/views/sign_up_screen.dart';
 import 'package:expense_app/src/features/input_screen/views/input_screen.dart';
 import 'package:expense_app/src/features/main_screen/views/main_screen.dart';
 import 'package:expense_app/src/features/on_boarding/views/on_boarding_scren.dart';
@@ -16,7 +18,9 @@ class App extends StatelessWidget {
       routes: {
         '/mainscreen': (context) => const MainScreen(),
         '/onboardingscreen': (context) => const OnBoardingScreen(),
-        '/inputscreen':(context) => const InputScreen(),
+        '/inputscreen': (context) => const InputScreen(),
+        '/signinscreen': (context) => const SignInScreen(),
+        '/signupscreen': (context) => const SignUpScreen(),
       },
       home: const OnBoardingScreen(),
     );
