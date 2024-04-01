@@ -48,3 +48,6 @@ windows/
 macos/
 .vscode/
 lib/.env
+
+# Firebase configure
+lib/firebase_options.dart
