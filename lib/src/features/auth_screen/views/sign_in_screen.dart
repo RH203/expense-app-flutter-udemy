@@ -192,8 +192,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   SizedBox _formFieldSignIn(BuildContext context) {
     return SizedBox(
-      height: 200,
       width: double.infinity,
+      height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
