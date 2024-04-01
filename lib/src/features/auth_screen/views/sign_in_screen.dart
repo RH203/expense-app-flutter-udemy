@@ -211,7 +211,7 @@ class _SignInScreenState extends State<SignInScreen> {
               return "";
             },
           ),
-          TextFieldForm(
+          TextFieldForm.password(
             controller: _passwordController,
             hintText: "Password",
             keyboardType: TextInputType.name,
