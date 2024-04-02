@@ -31,7 +31,7 @@ This project is a Flutter application developed as part of the course at Academi
 
 ## Contributions
 
-I really appreciate the contribution from the community. If you would like to contribute to this project, please follow the steps below:
+I really appreciate the contribution from this project. If you would like to contribute to this project, please follow the steps below:
 
 1. Fork this repository.
 2. Create a new feature branch (`git checkout -b feature/new-feature`).
