@@ -1,0 +1,17 @@
+flutter_native_splash:
+  color: "#FEFBFF"
+  image: assets/images/on_boarding/image-2.png
+  # branding: assets/branding-development.png
+  color_dark: "#1B1B1F"
+  image_dark: assets/images/on_boarding/image-2.png
+  # branding_dark: assets/branding-development.png
+
+  android_12:
+    color: "#FEFBFF"
+    image: assets/images/on_boarding/image-2.png
+    # branding: assets/branding-development.png
+    color_dark: "#1B1B1F"
+    image_dark: assets/images/on_boarding/image-2.png
+    # branding_dark: assets/branding-development.png
+
+  web: false
