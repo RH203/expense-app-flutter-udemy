@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightTheme(BuildContext context) => ThemeData(
       useMaterial3: true,
+      
       fontFamily: GoogleFonts.poppins().fontFamily,
       textTheme: TextThemeCustom.appTextTheme(context),
       colorScheme: const ColorScheme.light(

@@ -1,4 +1,5 @@
 import 'package:expense_app/src/utils/helpers_variabel/helpers_variabel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ThirdPage extends StatelessWidget {
@@ -52,8 +53,10 @@ class ThirdPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/signinscreen'),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushNamed(context, '/checkpagescreen');
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).colorScheme.primaryContainer,
@@ -80,7 +83,7 @@ class ThirdPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () =>
-                          Navigator.pushNamed(context, '/signupscreen'),
+                          Navigator.pushNamed(context, '/checkpagescreen'),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).colorScheme.primaryContainer,
