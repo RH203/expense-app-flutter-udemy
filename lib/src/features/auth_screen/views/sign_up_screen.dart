@@ -3,6 +3,7 @@ import 'package:expense_app/src/utils/theme/theme_provider.dart';
 import 'package:expense_app/src/utils/widget/custom_buttons/custom_buttons.dart';
 import 'package:expense_app/src/utils/widget/text_field_form/text_field_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _emailController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -101,8 +101,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                       ),
-                      TextButton(
-                        onPressed: () =>
+                      GestureDetector(
+                        onTap: () =>
                             Navigator.popAndPushNamed(context, '/signinscreen'),
                         child: Text(
                           "Sign in now ",
@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Flexible(
                 child: TextFieldForm(
                   controller: _lastNameController,

@@ -1,15 +1,14 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:expense_app/src/features/auth_screen/models/validator.dart';
-import 'package:expense_app/src/features/main_screen/views/main_screen.dart';
 import 'package:expense_app/src/utils/theme/theme_provider.dart';
 import 'package:expense_app/src/utils/widget/custom_buttons/custom_buttons.dart';
 import 'package:expense_app/src/utils/widget/text_field_form/text_field_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -19,20 +18,41 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final log = Logger("SIGN IN");
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _checkSignIn = false;
+  bool _isLoading = false;
   bool _valueCheckBox = false;
-  final log = Logger("SIGN IN");
+  bool _isLoginFailed = false;
 
-  Future signIn() async {
+  void _showErrorMessageAfterDelay() {
+    setState(() {
+      _isLoginFailed = true;
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoginFailed = false;
+      });
+    });
+  }
+
+  Future _signIn() async {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
     try {
+      log.info("Function sign run");
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
+      log.info("Function sign done");
     } catch (e) {
+      _showErrorMessageAfterDelay();
       log.warning("Oh nooo", e);
     }
+    setState(() {
+      _isLoading = !_isLoading;
+    });
   }
 
   @override
@@ -66,163 +86,137 @@ class _SignInScreenState extends State<SignInScreen> {
           )
         ],
       ),
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingAnimationWidget.staggeredDotsWave(
-                color: Theme.of(context).colorScheme.tertiary,
-                size: 200,
-              );
-            }
-            return _bodySignIn(context);
-          } else if (snapshot.hasData == null) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingAnimationWidget.staggeredDotsWave(
-                color: Theme.of(context).colorScheme.tertiary,
-                size: 200,
-              );
-            }
-            return const MainScreen();
-          } else {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingAnimationWidget.staggeredDotsWave(
-                color: Theme.of(context).colorScheme.tertiary,
-                size: 200,
-              );
-            }
-            return _bodySignIn(context);
-          }
-        },
-      ),
-    );
-  }
-
-  Container _bodySignIn(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      width: double.infinity,
-      height: double.infinity,
-      margin: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Stack(
         children: [
-          //* Sign in Text
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 30),
-            child: Text(
-              "Sign In",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge!
-                  .copyWith(color: Theme.of(context).colorScheme.onBackground),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          //* Field Text
-          _formFieldSignIn(context),
-          //* Button
-          SizedBox(
-            width: double.infinity,
-            height: 120,
+          Container(
+            color: Theme.of(context).colorScheme.background,
+            margin: const EdgeInsets.all(8),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CustomButtons(
-                  onTap: signIn,
-                  text: "Login",
-                  fontSize: 20,
-                  height: 70,
-                  width: 360,
-                  padding: const EdgeInsets.all(20),
-                  fontWeight: FontWeight.bold,
+                //* Sign in Text
+                Text(
+                  "Sign In",
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground),
+                  textAlign: TextAlign.center,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account yet? ",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    TextButton(
-                      onPressed: () =>
-                          Navigator.popAndPushNamed(context, '/signupscreen'),
-                      child: Text(
-                        "Create now ",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-          //* Login via gmail, facebook, etc
-          SizedBox(
-            width: double.infinity,
-            height: 90,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        thickness: 2,
-                        height: 2,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                    ),
-                    Text(
-                      "or sign in with",
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        thickness: 2,
-                        height: 2,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+
+                //* Field Text
+                _formFieldSignIn(context),
+                //* Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 120,
+                  child: Column(
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          FontAwesome.google_brand,
-                          size: 30,
-                        ),
+                      CustomButtons(
+                        onTap: _signIn,
+                        text: "Create",
+                        fontSize: 20,
+                        height: 70,
+                        width: 360,
+                        padding: const EdgeInsets.all(20),
+                        fontWeight: FontWeight.bold,
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          FontAwesome.facebook_brand,
-                          size: 30,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account? ",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          GestureDetector(
+                            onTap: () => Navigator.popAndPushNamed(
+                                context, '/signinscreen'),
+                            child: Text(
+                              "Sign in now ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                //* Login via gmail, facebook, etc
+                SizedBox(
+                  width: double.infinity,
+                  height: 80,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              thickness: 2,
+                              height: 2,
+                              indent: 10,
+                              endIndent: 10,
+                            ),
+                          ),
+                          Text(
+                            "or sign up with",
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              thickness: 2,
+                              height: 2,
+                              indent: 10,
+                              endIndent: 10,
+                            ),
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          FontAwesome.apple_brand,
-                          size: 30,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                FontAwesome.google_brand,
+                                size: 30,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                FontAwesome.facebook_brand,
+                                size: 30,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                FontAwesome.apple_brand,
+                                size: 30,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -231,6 +225,35 @@ class _SignInScreenState extends State<SignInScreen> {
               ],
             ),
           ),
+          if (_isLoading)
+            Positioned.fill(
+              child: Container(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                child: Center(
+                  child: LoadingAnimationWidget.waveDots(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    size: 50,
+                  ),
+                ),
+              ),
+            ),
+          if (_isLoginFailed)
+            Positioned.fill(
+              child: Container(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                child: Center(
+                  child: AwesomeSnackbarContent(
+                    title: 'On Snap!',
+                    message: 'Check email or password could be wrong!',
+                    contentType: ContentType.failure,
+                    
+                  ),
+                  
+                ),
+              ),
+            ),
         ],
       ),
     );
